@@ -23,6 +23,9 @@ const Home = () => {
   }, []);
 
   const handleStart = () => {
+    // Clear any saved quiz progress before starting fresh
+    localStorage.removeItem(STORAGE_KEY);
+
     navigate(
       `/quiz?topic=${encodeURIComponent(topic)}&subtopic=${encodeURIComponent(
         subtopic

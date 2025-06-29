@@ -153,7 +153,7 @@ const introToJavaMedium = [
     subtopic: "Introduction to Java",
     difficulty: "medium",
     question:
-      'Consider the code below:\n```java\npublic class Test {\n  public static void main(String[] args) {\n    System.out.print("A");\n    System.out.print("B");\n  }\n}\n```\nWhat will be the output?',
+      'Consider the code below:\n```public class Test {\n  public static void main(String[] args) {\n    System.out.print("A");\n    System.out.print("B");\n  }\n}\n```\nWhat will be the output?',
     options: ["A", "B", "AB", "A B"],
     correctAnswer: "AB",
     description:
@@ -175,7 +175,7 @@ const introToJavaMedium = [
     subtopic: "Introduction to Java",
     difficulty: "medium",
     question:
-      "What will this code output?\n```java\nint x = 5;\nSystem.out.println(x++);\nSystem.out.println(++x);\n```",
+      "What will this code output?\n```int x = 5;\nSystem.out.println(x++);\nSystem.out.println(++x);\n```",
     options: ["5 6", "6 6", "5 7", "6 7"],
     correctAnswer: "5 7",
     description:
@@ -202,7 +202,7 @@ const introToJavaMedium = [
     subtopic: "Introduction to Java",
     difficulty: "medium",
     question:
-      'What will be the output?\n```java\npublic class Main {\n  public static void main(String[] args) {\n    int a = 10;\n    int b = 20;\n    System.out.println(a + b + "Sum");\n  }\n}\n```',
+      'What will be the output?\n```public class Main {\n  public static void main(String[] args) {\n    int a = 10;\n    int b = 20;\n    System.out.println(a + b + "Sum");\n  }\n}\n```',
     options: ["30Sum", "Sum30", "1020Sum", "Sum1020"],
     correctAnswer: "30Sum",
     description:
@@ -262,7 +262,7 @@ const introToJavaHard = [
     subtopic: "Introduction to Java",
     difficulty: "hard",
     question:
-      'What will be the output?\n```java\npublic class Test {\n  public static void main(String[] args) {\n    int a = 10;\n    int b = 20;\n    System.out.println("Sum is: " + a + b);\n  }\n}\n```',
+      'What will be the output?\n```public class Test {\n  public static void main(String[] args) {\n    int a = 10;\n    int b = 20;\n    System.out.println("Sum is: " + a + b);\n  }\n}\n```',
     options: ["Sum is: 30", "30", "Sum is: 1020", "Compilation error"],
     correctAnswer: "Sum is: 1020",
     description:
@@ -282,7 +282,7 @@ const introToJavaHard = [
     subtopic: "Introduction to Java",
     difficulty: "hard",
     question:
-      "What does this print?\n```java\npublic class Main {\n  static int x;\n  public static void main(String[] args) {\n    System.out.println(x);\n  }\n}\n```",
+      "What does this print?\n```public class Main {\n  static int x;\n  public static void main(String[] args) {\n    System.out.println(x);\n  }\n}\n```",
     options: ["0", "null", "Compilation error", "Garbage value"],
     correctAnswer: "0",
     description:
@@ -293,7 +293,7 @@ const introToJavaHard = [
     subtopic: "Introduction to Java",
     difficulty: "hard",
     question:
-      "What will be the output?\n```java\npublic class Main {\n  public static void main(String[] args) {\n    int x = 5 + 2 * 3;\n    System.out.println(x);\n  }\n}\n```",
+      "What will be the output?\n```public class Main {\n  public static void main(String[] args) {\n    int x = 5 + 2 * 3;\n    System.out.println(x);\n  }\n}\n```",
     options: ["21", "11", "15", "13"],
     correctAnswer: "11",
     description:
@@ -304,7 +304,7 @@ const introToJavaHard = [
     subtopic: "Introduction to Java",
     difficulty: "hard",
     question:
-      "What will be the result?\n```java\nString s = null;\nSystem.out.println(s + 10);\n```",
+      "What will be the result?\n```String s = null;\nSystem.out.println(s + 10);\n```",
     options: ["null10", "10", "Compilation error", "NullPointerException"],
     correctAnswer: "null10",
     description:
@@ -330,7 +330,7 @@ const introToJavaHard = [
     subtopic: "Introduction to Java",
     difficulty: "hard",
     question:
-      'What is the result of:\n```java\nSystem.out.println(10 + 20 + "30");\n```',
+      'What is the result of:\n```System.out.println(10 + 20 + "30");\n```',
     options: ["1030", "30", "3030", "3030.0"],
     correctAnswer: "3030",
     description:
@@ -341,7 +341,7 @@ const introToJavaHard = [
     subtopic: "Introduction to Java",
     difficulty: "hard",
     question:
-      "What is the output?\n```java\npublic class Demo {\n  public static void main(String[] args) {\n    int a = 5;\n    int b = a++ + ++a;\n    System.out.println(b);\n  }\n}\n```",
+      "What is the output?\n```public class Demo {\n  public static void main(String[] args) {\n    int a = 5;\n    int b = a++ + ++a;\n    System.out.println(b);\n  }\n}\n```",
     options: ["11", "12", "13", "14"],
     correctAnswer: "12",
     description:
@@ -367,7 +367,7 @@ const introToJavaHard = [
     subtopic: "Introduction to Java",
     difficulty: "hard",
     question:
-      'Which is a valid declaration?\n```java\npublic class Main {\n  static public void main(String[] args) {\n    System.out.println("OK");\n  }\n}\n```',
+      'Which is a valid declaration?\n```public class Main {\n  static public void main(String[] args) {\n    System.out.println("OK");\n  }\n}\n```',
     options: [
       "Yes, it compiles and runs",
       "Invalid syntax",

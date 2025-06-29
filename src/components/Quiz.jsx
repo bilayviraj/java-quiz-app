@@ -1,10 +1,12 @@
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import allQuestions from "../data";
+import { useNavigate } from "react-router-dom";
 
 const STORAGE_KEY = "quiz-progress";
 
 const Quiz = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const topic = searchParams.get("topic");
@@ -220,9 +222,20 @@ const Quiz = () => {
           <p className="final-score">
             🎉 Quiz Completed! Your Score: {score}/{questions.length}
           </p>
-          <button className="restart-button" onClick={restartQuiz}>
-            Restart Quiz
-          </button>
+          <div className="button-group">
+            <button className="restart-button" onClick={restartQuiz}>
+              🔄 Restart Quiz
+            </button>
+            <button
+              className="home-button"
+              onClick={() => {
+                clearProgress();
+                navigate("/");
+              }}
+            >
+              🏠 Return to Home
+            </button>
+          </div>
         </div>
       )}
     </div>
