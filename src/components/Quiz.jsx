@@ -2,6 +2,8 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import allQuestions from "../data";
 
+const STORAGE_KEY = "quiz-progress";
+
 const Quiz = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -15,20 +17,58 @@ const Quiz = () => {
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
 
+  // Load progress or fetch new questions
   useEffect(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (
+        parsed.topic === topic &&
+        parsed.subtopic === subtopic &&
+        parsed.difficulty === difficulty
+      ) {
+        setQuestions(parsed.questions);
+        setCurrentIndex(parsed.currentIndex || 0);
+        setScore(parsed.score || 0);
+        setSelectedAnswer(parsed.selectedAnswer || "");
+        setSubmitted(false);
+        return;
+      }
+    }
+
+    // Fresh quiz
     const filtered = allQuestions.filter(
       (q) =>
         q.topic === topic &&
         q.subtopic === subtopic &&
         q.difficulty === difficulty
     );
-
     setQuestions(filtered);
     setCurrentIndex(0);
-    setSubmitted(false);
     setScore(0);
     setSelectedAnswer("");
+    setSubmitted(false);
   }, [topic, subtopic, difficulty]);
+
+  // Save progress
+  useEffect(() => {
+    if (questions.length > 0) {
+      const progress = {
+        topic,
+        subtopic,
+        difficulty,
+        questions,
+        currentIndex,
+        score,
+        selectedAnswer,
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+    }
+  }, [questions, currentIndex, score, selectedAnswer]);
+
+  const clearProgress = () => {
+    localStorage.removeItem(STORAGE_KEY);
+  };
 
   if (questions.length === 0) {
     return (
@@ -62,8 +102,46 @@ const Quiz = () => {
       setCurrentIndex(currentIndex + 1);
       setSelectedAnswer("");
       setSubmitted(false);
+    } else {
+      clearProgress();
     }
   };
+
+  const restartQuiz = () => {
+    clearProgress();
+
+    // Reload questions again
+    const filtered = allQuestions.filter(
+      (q) =>
+        q.topic === topic &&
+        q.subtopic === subtopic &&
+        q.difficulty === difficulty
+    );
+    setQuestions(filtered);
+    setCurrentIndex(0);
+    setScore(0);
+    setSelectedAnswer("");
+    setSubmitted(false);
+  };
+
+  const formatQuestionHTML = (text) => {
+    // Wrap code blocks (```...```) or inline <code> tags
+    const codeBlockPattern = /```([\s\S]*?)```/g;
+    const inlineCodePattern = /`([^`]+)`/g;
+
+    return text
+      .replace(
+        codeBlockPattern,
+        (_, code) => `<pre><code>${escapeHTML(code)}</code></pre>`
+      )
+      .replace(
+        inlineCodePattern,
+        (_, code) => `<code>${escapeHTML(code)}</code>`
+      );
+  };
+
+  const escapeHTML = (str) =>
+    str.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
   const renderFeedback = () => (
     <div className="result">
@@ -82,11 +160,22 @@ const Quiz = () => {
 
   return (
     <div className="quiz">
+      {/* Show Topic/Subtopic/Difficulty Info */}
+      <div className="quiz-meta">
+        <span>🎯{difficulty.toUpperCase()}</span>
+        <span>📘 {topic}</span>
+        <span>🧩 {subtopic}</span>
+      </div>
+
       <h3>
         Question {currentIndex + 1} of {questions.length}
       </h3>
-      <p className="question-text">{question.question}</p>
-
+      <div
+        className="question-text"
+        dangerouslySetInnerHTML={{
+          __html: formatQuestionHTML(question.question),
+        }}
+      ></div>
       <div className="options">
         {question.options.map((opt, idx) => {
           const isCorrect = opt === question.correctAnswer;
@@ -131,6 +220,9 @@ const Quiz = () => {
           <p className="final-score">
             🎉 Quiz Completed! Your Score: {score}/{questions.length}
           </p>
+          <button className="restart-button" onClick={restartQuiz}>
+            Restart Quiz
+          </button>
         </div>
       )}
     </div>

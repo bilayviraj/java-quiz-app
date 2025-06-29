@@ -1,78 +1,91 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import quizStructure from "../data/quizStructure";
+import { useState, useEffect } from "react";
+
+const STORAGE_KEY = "quiz-progress";
 
 const Home = () => {
   const navigate = useNavigate();
-  const [topic, setTopic] = useState("");
-  const [subtopic, setSubtopic] = useState("");
-  const [difficulty, setDifficulty] = useState("");
 
-  const selectedTopicObj = quizStructure.find((t) => t.topic === topic);
+  const [topic, setTopic] = useState("Java Fundamentals");
+  const [subtopic, setSubtopic] = useState("Introduction to Java");
+  const [difficulty, setDifficulty] = useState("easy");
+
+  const [hasSavedProgress, setHasSavedProgress] = useState(false);
+  const [savedData, setSavedData] = useState(null);
+
+  useEffect(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      setHasSavedProgress(true);
+      setSavedData(parsed);
+    }
+  }, []);
 
   const handleStart = () => {
-    if (!topic || !subtopic || !difficulty) {
-      alert("Please select all options.");
-      return;
-    }
     navigate(
-      `/quiz?topic=${topic}&subtopic=${subtopic}&difficulty=${difficulty}`
+      `/quiz?topic=${encodeURIComponent(topic)}&subtopic=${encodeURIComponent(
+        subtopic
+      )}&difficulty=${encodeURIComponent(difficulty)}`
     );
+  };
+
+  const handleResume = () => {
+    if (savedData) {
+      navigate(
+        `/quiz?topic=${encodeURIComponent(
+          savedData.topic
+        )}&subtopic=${encodeURIComponent(
+          savedData.subtopic
+        )}&difficulty=${encodeURIComponent(savedData.difficulty)}`
+      );
+    }
   };
 
   return (
     <div className="home">
-      <div className="form-group">
-        <label>Choose Topic:</label>
-        <select
-          value={topic}
-          onChange={(e) => {
-            setTopic(e.target.value);
-            setSubtopic(""); // reset subtopic on topic change
-          }}
-        >
-          <option value="">Select Topic</option>
-          {quizStructure.map((t) => (
-            <option key={t.topic} value={t.topic}>
-              {t.topic}
-            </option>
-          ))}
-        </select>
-      </div>
+      <div className="selectors">
+        <label>
+          Topic:
+          <select value={topic} onChange={(e) => setTopic(e.target.value)}>
+            <option value="Java Fundamentals">Java Fundamentals</option>
+            {/* Add more topics as needed */}
+          </select>
+        </label>
 
-      {topic && (
-        <div className="form-group">
-          <label>Choose Subtopic:</label>
+        <label>
+          Subtopic:
           <select
             value={subtopic}
             onChange={(e) => setSubtopic(e.target.value)}
           >
-            <option value="">Select Subtopic</option>
-            {selectedTopicObj?.subtopics.map((sub) => (
-              <option key={sub} value={sub}>
-                {sub}
-              </option>
-            ))}
+            <option value="Introduction to Java">Introduction to Java</option>
+            {/* Add more subtopics */}
           </select>
-        </div>
+        </label>
+
+        <label>
+          Difficulty:
+          <select
+            value={difficulty}
+            onChange={(e) => setDifficulty(e.target.value)}
+          >
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </label>
+      </div>
+
+      <button onClick={handleStart} className="resume-button">
+        Start New Quiz
+      </button>
+
+      {hasSavedProgress && (
+        <button onClick={handleResume} className="resume-button">
+          Continue Previous Quiz
+        </button>
       )}
-
-      <div className="form-group">
-        <label>Choose Difficulty:</label>
-        <select
-          value={difficulty}
-          onChange={(e) => setDifficulty(e.target.value)}
-        >
-          <option value="">Select Difficulty</option>
-          <option value="easy">Easy</option>
-          <option value="medium">Medium</option>
-          <option value="hard">Hard</option>
-        </select>
-      </div>
-
-      <div className="form-group">
-        <button onClick={handleStart}>Start Quiz</button>
-      </div>
     </div>
   );
 };

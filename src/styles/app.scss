@@ -5,6 +5,7 @@
 @use "./forms";
 @use "./quiz";
 @use "./header";
+@use "./home";
 
 @media (max-width: 768px) {
   .app {
