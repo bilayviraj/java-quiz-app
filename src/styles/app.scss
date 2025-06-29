@@ -1,0 +1,23 @@
+@use "./variables" as *;
+@use "./themes";
+@use "./layout";
+@use "./buttons";
+@use "./forms";
+@use "./quiz";
+@use "./header";
+
+@media (max-width: 768px) {
+  .app {
+    padding: 1rem;
+  }
+
+  button,
+  select {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  ul li {
+    margin-bottom: 0.75rem;
+  }
+}

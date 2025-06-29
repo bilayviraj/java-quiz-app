@@ -1,0 +1,21 @@
+// src/styles/_variables.scss
+
+$font-stack: "Segoe UI", sans-serif;
+$radius: 6px;
+$spacing: 1rem;
+
+:root {
+  --color-bg: #f9f9f9;
+  --color-text: #333;
+  --color-primary: #6200ea;
+  --color-primary-dark: #4b00b0;
+  --color-border: #ddd;
+}
+
+[data-theme="dark"] {
+  --color-bg: #1e1e1e;
+  --color-text: #ffffff;
+  --color-primary: #bb86fc;
+  --color-primary-dark: #3700b3;
+  --color-border: #444;
+}
