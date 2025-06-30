@@ -142,6 +142,18 @@ const Quiz = () => {
       );
   };
 
+  const formatDescriptionHTML = (text) => {
+    const inlineCodePattern = /`([^`]+)`/g;
+    const formatted = text
+      .replace(
+        inlineCodePattern,
+        (_, code) => `<code>${escapeHTML(code)}</code>`
+      )
+      .replace(/\n/g, "<br/>"); // Handle line breaks
+
+    return formatted;
+  };
+
   const escapeHTML = (str) =>
     str.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
@@ -156,7 +168,12 @@ const Quiz = () => {
           ? "✅ Correct!"
           : `❌ Incorrect. Correct answer is ${question.correctAnswer}.`}
       </p>
-      <div className="description">ℹ️ {question.description}</div>
+      <div
+        className="description"
+        dangerouslySetInnerHTML={{
+          __html: formatDescriptionHTML(question.description),
+        }}
+      ></div>
     </div>
   );
 

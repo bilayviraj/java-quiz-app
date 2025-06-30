@@ -1,18 +1,33 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import quizStructure from "../data/quizStructure";
 
 const STORAGE_KEY = "quiz-progress";
 
 const Home = () => {
   const navigate = useNavigate();
 
-  const [topic, setTopic] = useState("Java Fundamentals");
-  const [subtopic, setSubtopic] = useState("Introduction to Java");
+  // Extract all topics from structure
+  const allTopics = quizStructure.map((item) => item.topic);
+
+  const [topic, setTopic] = useState(allTopics[0]);
+  const [subtopic, setSubtopic] = useState("");
   const [difficulty, setDifficulty] = useState("easy");
 
+  const [availableSubtopics, setAvailableSubtopics] = useState([]);
   const [hasSavedProgress, setHasSavedProgress] = useState(false);
   const [savedData, setSavedData] = useState(null);
 
+  // Update subtopics when topic changes
+  useEffect(() => {
+    const found = quizStructure.find((item) => item.topic === topic);
+    if (found) {
+      setAvailableSubtopics(found.subtopics);
+      setSubtopic(found.subtopics[0]);
+    }
+  }, [topic]);
+
+  // Load progress if exists
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
@@ -23,9 +38,7 @@ const Home = () => {
   }, []);
 
   const handleStart = () => {
-    // Clear any saved quiz progress before starting fresh
     localStorage.removeItem(STORAGE_KEY);
-
     navigate(
       `/quiz?topic=${encodeURIComponent(topic)}&subtopic=${encodeURIComponent(
         subtopic
@@ -51,8 +64,11 @@ const Home = () => {
         <label>
           Topic:
           <select value={topic} onChange={(e) => setTopic(e.target.value)}>
-            <option value="Java Fundamentals">Java Fundamentals</option>
-            {/* Add more topics as needed */}
+            {allTopics.map((t, idx) => (
+              <option key={idx} value={t}>
+                {t}
+              </option>
+            ))}
           </select>
         </label>
 
@@ -62,8 +78,11 @@ const Home = () => {
             value={subtopic}
             onChange={(e) => setSubtopic(e.target.value)}
           >
-            <option value="Introduction to Java">Introduction to Java</option>
-            {/* Add more subtopics */}
+            {availableSubtopics.map((s, idx) => (
+              <option key={idx} value={s}>
+                {s}
+              </option>
+            ))}
           </select>
         </label>
 
